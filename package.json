@@ -1,0 +1,18 @@
+{
+  "name": "opendaybuonarroti",
+  "version": "1.0.0",
+  "description": "Simple website to explain how the Buonarroti High School is organised",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Simon9116/OpenDayBuonarroti.git"
+  },
+  "author": "Simone Leveghi, Francesco Petracca",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
