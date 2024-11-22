@@ -22,7 +22,7 @@ if(process.env.STATUS === "production") {
     https.createServer({
         key: readFileSync(join(__dirname, 'cert/server.key')),
         cert: readFileSync(join(__dirname, 'cert/server.cert'))
-    }, app).listen(443, () => {
+    }, app).listen(port, hostname, () => {
         console.log(`Listening at: https://${hostname}:${port}`);
     });
 }
