@@ -12,6 +12,19 @@
 </head>
 <body>
     <button class="settings-button">⚙️ Impostazioni</button>
+    <div id="settings-panel">
+
+        <label for="sent-color">Colore Messaggi Inviati:</label>
+        <input type="color" id="sent-color" value="#d1f7c4">
+
+        <label for="received-color">Colore Messaggi Ricevuti:</label>
+        <input type="color" id="received-color" value="#a0a0a0">
+
+        <label for="chat-bg">Sfondo Chat:</label>
+        <input type="color" id="chat-bg" value="#ffffff">
+
+        <button>Applica</button>
+    </div>
 
     <div class="chat-container" id="chat-container">
         <div class="messages"></div>

@@ -32,3 +32,19 @@ form.addEventListener("submit", e => {
 
     form.reset();
 });
+
+
+const root = document.querySelector(":root");
+const applyButton = document.querySelector("#settings-panel button");
+const settingsButton = document.querySelector(".settings-button");
+
+applyButton.addEventListener("click", () => {
+    root.style.setProperty('--sent-color', document.querySelector('#sent-color').value);
+    root.style.setProperty('--received-color', document.querySelector('#received-color').value);
+    root.style.setProperty('--chat-bg', document.querySelector('#chat-bg').value);
+});
+
+settingsButton.addEventListener("click", () => {
+    const panel = document.querySelector('#settings-panel');
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+})
