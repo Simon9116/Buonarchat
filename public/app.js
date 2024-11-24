@@ -1,4 +1,4 @@
-const messagesContainer = document.querySelector("#messages");
+const messagesContainer = document.querySelector(".chat-container .messages");
 
 const socket = io("/");
 socket.on("connect", () => {
@@ -7,7 +7,10 @@ socket.on("connect", () => {
 
 socket.on("message", (msg) => {
     let parsedMessage = JSON.parse(msg);
-    messagesContainer.innerHTML += "<li>" + parsedMessage.text + "</li>";
+    if(parsedMessage.sender !== socket.id) {
+        messagesContainer.innerHTML += "<div class='message received'>" + parsedMessage.text + "</div>";
+    }
+
 })
 
 const form = document.querySelector("#send-message-form");
@@ -20,8 +23,12 @@ form.addEventListener("submit", e => {
         data[key] = value;
     });
 
+    data.sender = socket.id;
+
+    messagesContainer.innerHTML += "<div class='message sent'>" + data.text + "</div>";
+
     socket.emit("message", JSON.stringify(data));
     console.log("Sent: ", data);
 
     form.reset();
-})
+});
