@@ -15,17 +15,12 @@ app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
-app.use((req, res, next) => {
-    const route = req.path.split('/')[1];
-    const staticDir = join(__dirname, route);
-    console.log(staticDir);
+app.use(express.static(join(__dirname, "public")));
 
-    express.static(staticDir)(req, res, next);
-});
 
 app.get('/chat', (req, res) => {
-    res.render('chat', { messages: [] });
-});
+    res.render('chat', {messages: []});
+})
 
 let server = null;
 if(process.env.STATUS === "production") {
