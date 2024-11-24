@@ -14,12 +14,15 @@ app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
+app.use(express.static(join(__dirname, "public")));
+
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', { messages: [] });
 });
 
+
 if(process.env.STATUS === "production") {
-    https.createServer({
+    server = https.createServer({
         key: readFileSync(join(__dirname, 'cert/server.key')),
         cert: readFileSync(join(__dirname, 'cert/server.cert'))
     }, app).listen(port, hostname, () => {
@@ -27,7 +30,7 @@ if(process.env.STATUS === "production") {
     });
 }
 else {
-    app.listen(port, hostname, () => {
+    server = app.listen(port, hostname, () => {
         console.log(`Listening at http://${hostname}:${port}`);
     })
 }
