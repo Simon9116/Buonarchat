@@ -1,6 +1,7 @@
 const express = require('express');
 const https = require('https');
 const engine = require("ejs-mate");
+const {Server} = require("socket.io")
 const { join } = require('path');
 const { readFileSync } = require("fs");
 require('dotenv').config();
@@ -20,7 +21,7 @@ app.get('/', (req, res) => {
     res.render('index', { messages: [] });
 });
 
-
+let server = null;
 if(process.env.STATUS === "production") {
     server = https.createServer({
         key: readFileSync(join(__dirname, 'cert/server.key')),
@@ -34,3 +35,15 @@ else {
         console.log(`Listening at http://${hostname}:${port}`);
     })
 }
+
+const io = new Server(server);
+io.on('connection', (socket) => {
+    console.log('Connection established with: ' + socket.id);
+});
+const namespace = io.of('/');
+namespace.on('connection', (socket) => {
+    socket.on('message', (msg) => {
+        console.log("Received: " + msg);
+        namespace.emit("message", msg);
+    })
+})
