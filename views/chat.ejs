@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
     <script src="/app.js" async></script>
+    <link rel="stylesheet" href="/styles.css">
     <title>Chat</title>
 </head>
 <body>
@@ -15,7 +16,7 @@
         <li><%= message %></li>
     <%}%>
     </ul>
-    <form id="send-message-form" action="/" method="GET">
+    <form id="send-message-form" action="/chat" method="GET">
         <input name="text" type="text" placeholder="Messaggio">
 
         <input type="submit" value="Invia">

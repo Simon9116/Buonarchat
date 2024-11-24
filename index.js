@@ -3,7 +3,7 @@ const https = require('https');
 const engine = require("ejs-mate");
 const {Server} = require("socket.io")
 const { join } = require('path');
-const { readFileSync } = require("fs");
+const { readFileSync, stat} = require("fs");
 require('dotenv').config();
 
 const app = express();
@@ -15,10 +15,16 @@ app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
-app.use(express.static(join(__dirname, "public")));
+app.use((req, res, next) => {
+    const route = req.path.split('/')[1];
+    const staticDir = join(__dirname, route);
+    console.log(staticDir);
 
-app.get('/', (req, res) => {
-    res.render('index', { messages: [] });
+    express.static(staticDir)(req, res, next);
+});
+
+app.get('/chat', (req, res) => {
+    res.render('chat', { messages: [] });
 });
 
 let server = null;
@@ -40,10 +46,10 @@ const io = new Server(server);
 io.on('connection', (socket) => {
     console.log('Connection established with: ' + socket.id);
 });
-const namespace = io.of('/');
+const namespace = io.of('/chat');
 namespace.on('connection', (socket) => {
     socket.on('message', (msg) => {
         console.log("Received: " + msg);
         namespace.emit("message", msg);
     })
-})
+});

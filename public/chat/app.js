@@ -1,6 +1,6 @@
 const messagesContainer = document.querySelector("#messages");
 
-const socket = io("/");
+const socket = io("/chat");
 socket.on("connect", () => {
     console.log("Connected to server with id: " + socket.id);
 });
