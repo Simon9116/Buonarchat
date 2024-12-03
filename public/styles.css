@@ -39,6 +39,9 @@ body {
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;
+    min-width: 1rem;
+    min-height: 1rem;
+    margin-bottom: 3px;
 }
 
 .message.sent {
