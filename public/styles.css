@@ -97,12 +97,13 @@ nav img {
     left: auto;
     right: auto;
     margin: 0 auto;
-    width: 50%;
+    width: 60%;
     height: 100%;
-    padding: 10px 0 70px 0;
+    padding: 10px 1rem 70px 1rem;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 .message {
@@ -158,10 +159,11 @@ nav img {
     outline: var(--main-color) 2px solid;
 }
 
-.chat-input input[type=submit] {
+.chat-input button {
     flex: 0 0 auto;
     background: var(--main-color);
-    width: 7rem;
+    width: 50px;
+    text-align: center;
     color: white;
     border: none;
     border-radius: 5px;
@@ -170,6 +172,6 @@ nav img {
     transition: background-color 0.3s ease;
 }
 
-.chat-input input[type=submit]:hover {
+.chat-input button:hover {
     background-color: var(--secondary-color);
 }
