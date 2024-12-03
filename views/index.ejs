@@ -11,20 +11,23 @@
     <title>Chat</title>
 </head>
 <body>
-    <button class="settings-button">⚙️ Impostazioni</button>
-    <div id="settings-panel">
+    <nav>
+        <img src="/logo.png" alt="buonarroti-logo">
+        <button class="settings-button"><img src="/settings-icon.png" alt="settings-icon"></button>
+        <div id="settings-panel">
 
-        <label for="sent-color">Colore Messaggi Inviati:</label>
-        <input type="color" id="sent-color" value="#d1f7c4">
+            <label for="sent-color">Colore Messaggi Inviati:</label>
+            <input type="color" id="sent-color" value="#d1f7c4">
 
-        <label for="received-color">Colore Messaggi Ricevuti:</label>
-        <input type="color" id="received-color" value="#a0a0a0">
+            <label for="received-color">Colore Messaggi Ricevuti:</label>
+            <input type="color" id="received-color" value="#a0a0a0">
 
-        <label for="chat-bg">Sfondo Chat:</label>
-        <input type="color" id="chat-bg" value="#ffffff">
+            <label for="chat-bg">Sfondo Chat:</label>
+            <input type="color" id="chat-bg" value="#ffffff">
 
-        <button>Applica</button>
-    </div>
+            <button>Applica</button>
+        </div>
+    </nav>
 
     <div class="chat-container" id="chat-container">
         <div class="messages"></div>
