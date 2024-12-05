@@ -1,6 +1,7 @@
 const express = require('express');
 const https = require('https');
 const engine = require("ejs-mate");
+const favicon = require("serve-favicon");
 const {Server} = require("socket.io")
 const { join } = require('path');
 const { readFileSync } = require("fs");
@@ -15,7 +16,9 @@ app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
+app.use(favicon(join(__dirname, "public", "favicon.ico")));
 app.use(express.static(join(__dirname, "public")));
+
 
 app.get('/', (req, res) => {
     res.render('index', { messages: [] });
