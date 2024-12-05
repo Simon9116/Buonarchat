@@ -38,6 +38,10 @@ nav {
     box-sizing: border-box;
 }
 
+nav #logo-link {
+    height: 100%;
+}
+
 nav img {
     height: 100%;
     object-fit: contain;
@@ -85,6 +89,18 @@ nav img {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+#settings-panel button {
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    height: 32px;
+    z-index: 99;
+    transition: background-color 0.3s ease;
 }
 
 .chat-container {
