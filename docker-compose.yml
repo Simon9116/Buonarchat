@@ -1,0 +1,31 @@
+services:
+  web:
+    container_name: "app"
+    build: .
+    ports:
+      - "5000:8080"
+  mysql:
+    container_name: "mysql"
+    image: "mysql:8"
+    restart: "always"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: chat
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+  phpmyadmin:
+    container_name: "phpmyadmin"
+    image: "phpmyadmin/phpmyadmin"
+    restart: "always"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "5001:80"
+    depends_on:
+      - mysql
+volumes:
+  db-data:
