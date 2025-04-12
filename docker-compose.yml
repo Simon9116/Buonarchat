@@ -2,6 +2,8 @@ services:
   web:
     container_name: "app"
     build: .
+    env_file:
+      - .env
     ports:
       - "5000:8080"
   mysql:

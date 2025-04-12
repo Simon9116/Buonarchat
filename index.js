@@ -4,7 +4,6 @@ const engine = require("ejs-mate");
 const {Server} = require("socket.io")
 const { join } = require('path');
 const { readFileSync } = require("fs");
-require('dotenv').config();
 
 const app = express();
 
