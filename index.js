@@ -29,8 +29,8 @@ else {
 
 app.use(express.static(join(__dirname, "public")));
 
-app.get('/chat', (req, res) => {
-    res.render('chat', {messages: []});
+app.get('/chat/:chatId', (req, res) => {
+    res.render('chat', {messages: [], chatId: req.params.chatId});
 })
 
 server.listen(port, hostname, () => {

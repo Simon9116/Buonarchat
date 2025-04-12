@@ -8,6 +8,9 @@
     <script src="/chat/app.js" async></script>
     <title>Chat</title>
 </head>
+<script>
+    const chatId = "<%= chatId %>";
+</script>
 <body>
     <ul id="messages">
     <% for(let message of messages) { %>
@@ -16,7 +19,6 @@
     </ul>
     <form id="send-message-form" action="/" method="GET">
         <input name="text" type="text" placeholder="Messaggio">
-        <input name="group" type="number">
 
         <input type="submit" value="Invia">
     </form>

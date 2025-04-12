@@ -5,6 +5,8 @@ socket.on("connect", () => {
     console.log("Connected to server with id: " + socket.id);
 });
 
+socket.emit("joinRoom", chatId);
+
 socket.on("message", (msg) => {
     let parsedMessage = JSON.parse(msg);
     messagesContainer.innerHTML += "<li>" + parsedMessage.text + "</li>";
@@ -20,7 +22,6 @@ form.addEventListener("submit", e => {
         data[key] = value;
     });
 
-    socket.emit("joinRoom", data["group"]);
     socket.emit("message", JSON.stringify(data));
     console.log("Sent: ", data);
 
