@@ -20,6 +20,7 @@ form.addEventListener("submit", e => {
         data[key] = value;
     });
 
+    socket.emit("joinRoom", data["group"]);
     socket.emit("message", JSON.stringify(data));
     console.log("Sent: ", data);
 

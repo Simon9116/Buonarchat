@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http');
 const https = require('https');
 const engine = require("ejs-mate");
 const {Server} = require("socket.io")
@@ -15,36 +16,47 @@ app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
-app.use(express.static(join(__dirname, "public")));
-
-
-app.get('/chat', (req, res) => {
-    res.render('chat', {messages: []});
-})
-
 let server = null;
 if(process.env.STATUS === "production") {
     server = https.createServer({
         key: readFileSync(join(__dirname, 'cert/server.key')),
         cert: readFileSync(join(__dirname, 'cert/server.cert'))
-    }, app).listen(port, hostname, () => {
-        console.log(`Listening at: https://${hostname}:${port}`);
-    });
+    }, app);
 }
 else {
-    server = app.listen(port, hostname, () => {
-        console.log(`Listening at http://${hostname}:${port}`);
-    })
+    server = http.createServer(app);
 }
+
+app.use(express.static(join(__dirname, "public")));
+
+app.get('/chat', (req, res) => {
+    res.render('chat', {messages: []});
+})
+
+server.listen(port, hostname, () => {
+    console.log(`Listening at ${hostname}:${port}`);
+})
 
 const io = new Server(server);
 io.on('connection', (socket) => {
     console.log('Connection established with: ' + socket.id);
 });
+
 const namespace = io.of('/chat');
+let group;
 namespace.on('connection', (socket) => {
+    socket.on('joinRoom', (roomName) => {
+        group = roomName;
+        socket.join(roomName);
+        console.log(`${socket.id} joined room: ${roomName}`);
+    });
+
     socket.on('message', (msg) => {
         console.log("Received: " + msg);
-        namespace.emit("message", msg);
-    })
+        socket.to(group).emit("message", msg);
+    });
 });
+
+
+
+
