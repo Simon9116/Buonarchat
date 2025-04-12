@@ -1,10 +1,11 @@
 {
-  "name": "opendaybuonarroti",
+  "name": "buonarchat",
   "version": "1.0.0",
   "description": "Simple website to explain how the Buonarroti High School is organised",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js",
+    "test": "nodemon index.js"
   },
   "repository": {
     "type": "git",

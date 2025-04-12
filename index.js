@@ -4,8 +4,7 @@ const https = require('https');
 const engine = require("ejs-mate");
 const {Server} = require("socket.io")
 const { join } = require('path');
-const { readFileSync, stat} = require("fs");
-require('dotenv').config();
+const { readFileSync } = require("fs");
 
 const app = express();
 
