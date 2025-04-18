@@ -1,4 +1,4 @@
 node_modules/
 cert/
-.env
+*.env
 .idea/

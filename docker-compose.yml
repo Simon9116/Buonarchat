@@ -3,7 +3,7 @@ services:
     container_name: "app"
     build: .
     env_file:
-      - .env
+      - app.env
     ports:
       - "5000:8080"
     depends_on:
@@ -13,9 +13,8 @@ services:
     container_name: "mysql"
     image: "mysql:8"
     restart: "always"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: buonarchat
+    env_file:
+      - db.env
     volumes:
       - db-data:/var/lib/mysql
     healthcheck:
@@ -27,10 +26,8 @@ services:
     container_name: "phpmyadmin"
     image: "phpmyadmin/phpmyadmin"
     restart: "always"
-    environment:
-      PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: root
+    env_file:
+      - pma.env
     ports:
       - "5001:80"
     depends_on:
