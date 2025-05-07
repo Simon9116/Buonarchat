@@ -6,23 +6,12 @@ const mysql = require("mysql2");
 const {Server} = require("socket.io")
 const { join } = require('path');
 const { readFileSync } = require("fs");
+const con = require("./connection");
 
 const app = express();
 
 const hostname = (process.env.STATUS === "production")? process.env.PROD_HOST : process.env.DEV_HOST;
 const port = (process.env.STATUS === "production")? process.env.PROD_PORT : process.env.DEV_PORT;
-
-const con = mysql.createConnection({
-    host: process.env.DB_CONTAINER_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-});
-
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("DB connection ok");
-});
 
 
 app.engine("ejs", engine);
@@ -69,7 +58,3 @@ namespace.on('connection', (socket) => {
         socket.to(group).emit("message", msg);
     });
 });
-
-
-
-
