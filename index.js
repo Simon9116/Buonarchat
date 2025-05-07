@@ -56,5 +56,17 @@ namespace.on('connection', (socket) => {
     socket.on('message', (msg) => {
         console.log("Received: " + msg);
         socket.to(group).emit("message", msg);
+
+        let parsedMsg = JSON.parse(msg);
+
+        con.prepare("INSERT INTO Message(author,chat,content) VALUES (?,?,?)", (err, stmt) => {
+            if (err) throw err;
+
+            stmt.execute([parsedMsg.sender,group,parsedMsg.text], (err, result) => {
+                if (err) throw err;
+            });
+            stmt.close();
+        });
+
     });
 });
