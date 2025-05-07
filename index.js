@@ -21,6 +21,10 @@ app.set("views", join(__dirname, "views"));
 app.use(favicon(join(__dirname, "public", "favicon.ico")));
 app.use(express.static(join(__dirname, "public")));
 
+app.get("/", (req, res) => {
+    res.render("login");
+})
+
 app.get('/chat/:chatId', (req, res) => {
     res.render('chat', {messages: [], chatId: req.params.chatId});
 })

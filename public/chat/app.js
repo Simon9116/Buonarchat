@@ -9,9 +9,7 @@ socket.emit("joinRoom", chatId);
 
 socket.on("message", (msg) => {
     let parsedMessage = JSON.parse(msg);
-    if(parsedMessage.sender !== socket.id) {
-        messagesContainer.innerHTML += "<div class='message received'>" + parsedMessage.text + "</div>";
-    }
+    messagesContainer.innerHTML += "<div class='message received'>" + parsedMessage.text + "</div>";
 
 })
 
@@ -25,7 +23,8 @@ form.addEventListener("submit", e => {
         data[key] = value;
     });
 
-    data.sender = socket.id;
+    //data.sender = socket.id;
+    data.sender = 0;
 
     messagesContainer.innerHTML += "<div class='message sent'>" + data.text + "</div>";
 
