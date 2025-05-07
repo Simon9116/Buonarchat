@@ -4,24 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/chat/app.js" async></script>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <title>Chat</title>
 </head>
 <script>
     const chatId = "<%= chatId %>";
 </script>
 <body>
-    <ul id="messages">
-    <% for(let message of messages) { %>
-        <li><%= message %></li>
-    <%}%>
-    </ul>
-    <form id="send-message-form" action="/" method="GET">
-        <input name="text" type="text" placeholder="Messaggio">
+    <nav>
+        <a href="https://buonarroti.tn.it" id="logo-link"><img src="/logo.png" alt="buonarroti-logo"></a>
+        <button class="settings-button"><img src="/settings-icon.png" alt="settings-icon"></button>
+        <div id="settings-panel">
 
-        <input type="submit" value="Invia">
-    </form>
+            <label for="sent-color">Colore Messaggi Inviati:</label>
+            <input type="color" id="sent-color" value="#d1f7c4">
+
+            <label for="received-color">Colore Messaggi Ricevuti:</label>
+            <input type="color" id="received-color" value="#a0a0a0">
+
+            <label for="chat-bg">Sfondo Chat:</label>
+            <input type="color" id="chat-bg" value="#ffffff">
+
+            <button>Applica</button>
+        </div>
+    </nav>
+
+    <div class="chat-container" id="chat-container">
+        <div class="messages"></div>
+        <div class="chat-input">
+            <form id="send-message-form" action="/" method="GET">
+                <input name="text" type="text" placeholder="Messaggio">
+
+                <button type="submit"><img src="/send-icon.png" alt="Invia"></button>
+            </form>
+        </div>
+    </div>
+
+
 </body>
 </html>

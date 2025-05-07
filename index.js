@@ -3,6 +3,7 @@ const http = require('http');
 const https = require('https');
 const engine = require("ejs-mate");
 const mysql = require("mysql2");
+const favicon = require("serve-favicon");
 const {Server} = require("socket.io")
 const { join } = require('path');
 const { readFileSync } = require("fs");
@@ -13,11 +14,11 @@ const app = express();
 const hostname = (process.env.STATUS === "production")? process.env.PROD_HOST : process.env.DEV_HOST;
 const port = (process.env.STATUS === "production")? process.env.PROD_PORT : process.env.DEV_PORT;
 
-
 app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
+app.use(favicon(join(__dirname, "public", "favicon.ico")));
 app.use(express.static(join(__dirname, "public")));
 
 app.get('/chat/:chatId', (req, res) => {
