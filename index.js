@@ -58,6 +58,27 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.get('/signup', (req, res) => {
+    res.render('signup', {});
+})
+
+app.post('/signup', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    con.prepare("INSERT INTO UserAccount(username,password) VALUES (?,?)", (err, stmt) => {
+        if (err) throw err;
+
+        stmt.execute([username,password], (err, result) => {
+            if (err) {
+                res.redirect('signup')
+            }
+
+            res.redirect("/login");
+        });
+    });
+})
+
 app.get('/chat/:chatId', (req, res) => {
     res.render('chat', {messages: [], chatId: req.params.chatId, userId: req.session.user.id});
 })
