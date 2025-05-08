@@ -23,8 +23,7 @@ form.addEventListener("submit", e => {
         data[key] = value;
     });
 
-    //data.sender = socket.id;
-    data.sender = 0;
+    data.sender = userId;
 
     messagesContainer.innerHTML += "<div class='message sent'>" + data.text + "</div>";
 
