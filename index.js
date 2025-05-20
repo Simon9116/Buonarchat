@@ -10,6 +10,7 @@ const { join } = require('path');
 const { readFileSync } = require("fs");
 const con = require("./connection");
 const auth = require("./auth");
+const xss = require("xss");
 
 const app = express();
 
@@ -36,12 +37,11 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
+    let username = xss(req.body.username);
+    let password =  xss(req.body.password);
 
     con.prepare("SELECT id, username FROM UserAccount WHERE username=? AND password=?", (err, stmt) => {
         if (err) throw err;
-
         stmt.execute([username, password], (err, result) => {
             if (err) throw err;
 
@@ -63,8 +63,8 @@ app.get('/signup', (req, res) => {
 })
 
 app.post('/signup', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
+    let username = xxs(req.body.username);
+    let password = xxs(req.body.password);
 
     con.prepare("INSERT INTO UserAccount(username,password) VALUES (?,?)", (err, stmt) => {
         if (err) throw err;
@@ -121,7 +121,7 @@ namespace.on('connection', (socket) => {
         con.prepare("INSERT INTO Message(author,chat,content) VALUES (?,?,?)", (err, stmt) => {
             if (err) throw err;
 
-            stmt.execute([parseInt(parsedMsg.sender),group,parsedMsg.text], (err, result) => {
+            stmt.execute([parseInt(parsedMsg.sender),group,xss(parsedMsg.text)], (err, result) => {
                 if (err) throw err;
             });
         });
