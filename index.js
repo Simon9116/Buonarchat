@@ -40,12 +40,12 @@ app.post('/login', (req, res) => {
     let password = req.body.password;
 
     con.prepare("SELECT id, username FROM UserAccount WHERE username=? AND password=?", (err, stmt) => {
-        if (err) throw err;
+        if (err) console.log(err) //throw err;
 
         stmt.execute([username, password], (err, result) => {
-            if (err) throw err;
+            if (err) console.log(err) // throw err;
 
-            if (result[0] !== null) {
+            if (result) {
                 let user = result[0];
                 req.session.user = {id: user.id, username: user.username};
                 res.redirect("/chat/1")
@@ -54,7 +54,6 @@ app.post('/login', (req, res) => {
                 res.redirect('/login');
             }
         });
-        stmt.close();
     });
 });
 
