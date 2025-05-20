@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `Chat` (
   `id` int NOT NULL,
   `name` varchar(20) NOT NULL,
-  `creationDate` datetime DEFAULT NULL
+  `creationDate` timestamp DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
