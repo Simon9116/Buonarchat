@@ -44,7 +44,7 @@ CREATE TABLE `Message` (
   `content` text NOT NULL,
   `chat` int NOT NULL,
   `author` int NOT NULL,
-  `sendingDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `sendingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
