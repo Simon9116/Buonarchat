@@ -51,7 +51,7 @@ CREATE TABLE `Message` (
 -- Triggers `Message`
 --
 DELIMITER $$
-CREATE TRIGGER `CheckUserInChatBeforeUpdate` BEFORE UPDATE ON `Message` FOR EACH ROW BEGIN
+CREATE TRIGGER `CheckUserInChatBeforeUpdate` BEFORE INSERT ON `Message` FOR EACH ROW BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM UserChat
         WHERE userAccount = NEW.author AND chat = NEW.chat
