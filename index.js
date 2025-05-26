@@ -79,7 +79,13 @@ app.post('/signup', (req, res) => {
 })
 
 app.get('/chat/:chatId', (req, res) => {
-    res.render('chat', {messages: [], chatId: req.params.chatId, userId: req.session.user.id});
+    con.prepare("SELECT * FROM Message WHERE chat=?", (err, stmt) => {
+        if (err) throw err;
+        stmt.execute([req.params.chatId], (err, result) => {
+            if (err) throw err;
+            res.render('chat', {messages: result, chatId: req.params.chatId, userId: req.session.user.id});
+        })
+    })
 })
 
 let server = null;

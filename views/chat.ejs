@@ -35,7 +35,17 @@
     </nav>
 
     <div class="chat-container" id="chat-container">
-        <div class="messages"></div>
+        <div class="messages">
+            <% for(let message of messages) { %>
+                <div class='message
+                <% if(message.author === userId) { %>
+                    sent
+                <% } else { %>
+                    received
+                <% } %>
+                '><%= message.content %></div>
+            <%}%>
+        </div>
         <div class="chat-input">
             <form id="send-message-form" action="/" method="GET">
                 <input name="text" type="text" placeholder="Messaggio">
