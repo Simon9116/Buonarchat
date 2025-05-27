@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/chat/app.js" async></script>
+    <script src="/chat/message-exchange.js" async></script>
+    <script src="/chat/chats-list.js" async></script>
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/chat/styles.css">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -33,27 +34,36 @@
             <button>Applica</button>
         </div>
     </nav>
-
-    <div class="chat-container" id="chat-container">
-        <div class="messages">
-            <% for(let message of messages) { %>
-                <div class='message
+    <section id="app-container">
+        <section id="chats-list">
+            <% for(let chat of chats) { %>
+                <div class="chat-item" data-chat-id="<%= chat.id %>">
+                    <h2><%= chat.name %></h2>
+                </div>
+            <%}%>
+        </section>
+        <section class="chat-container" id="chat-container">
+            <div class="messages">
+                <% for(let message of messages) { %>
+                    <div class='message
                 <% if(message.author === userId) { %>
                     sent
                 <% } else { %>
                     received
                 <% } %>
                 '><%= message.content %></div>
-            <%}%>
-        </div>
-        <div class="chat-input">
-            <form id="send-message-form" action="/" method="GET">
-                <input name="text" type="text" placeholder="Messaggio">
+                <%}%>
+            </div>
+            <div class="chat-input">
+                <form id="send-message-form" action="/" method="GET">
+                    <input name="text" type="text" placeholder="Messaggio">
 
-                <button type="submit"><img src="/send-icon.png" alt="Invia"></button>
-            </form>
-        </div>
-    </div>
+                    <button type="submit"><img src="/send-icon.png" alt="Invia"></button>
+                </form>
+            </div>
+        </section>
+    </section>
+
 
 
 </body>
