@@ -11,6 +11,10 @@ const { readFileSync } = require("fs");
 const con = require("./connection");
 const auth = require("./auth");
 
+const login = require("./routes/login");
+const signup = require("./routes/signup");
+const chat = require("./routes/chat");
+
 const app = express();
 
 const hostname = (process.env.STATUS === "production")? process.env.PROD_HOST : process.env.DEV_HOST;
@@ -20,6 +24,7 @@ app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
+//middleware
 app.use(favicon(join(__dirname, "public", "favicon.ico")));
 app.use(express.static(join(__dirname, "public")));
 app.use(express.json());
@@ -31,71 +36,11 @@ app.use(session({
 }));
 app.use(auth);
 
-app.get('/login', (req, res) => {
-    res.render('login', {});
-})
+//routes
+app.use("/login", login);
+app.use("/signup", signup);
+app.use("/chat", chat);
 
-app.post('/login', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
-
-    con.prepare("SELECT id, username FROM UserAccount WHERE username=? AND password=?", (err, stmt) => {
-        if (err) console.log(err) //throw err;
-
-        stmt.execute([username, password], (err, result) => {
-            if (err) console.log(err) // throw err;
-
-            if (result) {
-                let user = result[0];
-                req.session.user = {id: user.id, username: user.username};
-                res.redirect("/chat/1")
-            }
-            else {
-                res.redirect('/login');
-            }
-        });
-    });
-});
-
-app.get('/signup', (req, res) => {
-    res.render('signup', {});
-})
-
-app.post('/signup', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
-
-    con.prepare("INSERT INTO UserAccount(username,password) VALUES (?,?)", (err, stmt) => {
-        if (err) throw err;
-
-        stmt.execute([username,password], (err, result) => {
-            if (err) {
-                res.redirect('signup')
-            }
-
-            res.redirect("/login");
-        });
-    });
-})
-
-app.get('/chat/:chatId', (req, res) => {
-    let chats;
-    con.prepare("SELECT c.id, c.name FROM UserChat uc JOIN Chat c ON uc.chat = c.id WHERE userAccount=?", (err, stmt) => {
-        if (err) throw err;
-        stmt.execute([req.session.user.id], (err, result) => {
-            if (err) throw err;
-            chats = result;
-        })
-    })
-
-    con.prepare("SELECT * FROM Message WHERE chat=?", (err, stmt) => {
-        if (err) throw err;
-        stmt.execute([req.params.chatId], (err, result) => {
-            if (err) throw err;
-            res.render('chat', {chats: chats, messages: result, chatId: req.params.chatId, userId: req.session.user.id});
-        })
-    })
-})
 
 let server = null;
 if(process.env.STATUS === "production") {
