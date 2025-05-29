@@ -1,26 +1,25 @@
 const express = require('express');
+const conPromise = require("../connection");
+
 const router = express.Router();
-const con = require("../connection");
+
 
 router.get('/', (req, res) => {
     res.render('signup', {});
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+    const con = await conPromise;
+
     let username = req.body.username;
     let password = req.body.password;
 
-    con.prepare("INSERT INTO UserAccount(username,password) VALUES (?,?)", (err, stmt) => {
-        if (err) throw err;
-
-        stmt.execute([username,password], (err, result) => {
-            if (err) {
-                res.redirect('signup')
-            }
-
-            res.redirect("/login");
-        });
-    });
+    try {
+        await con.execute("INSERT INTO UserAccount(username,password) VALUES (?,?)", [username,password]).catch();
+        res.redirect("/login");
+    } catch (err) {
+        res.redirect('signup');
+    }
 });
 
 module.exports = router;

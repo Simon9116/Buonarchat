@@ -3,12 +3,11 @@ const session = require('express-session');
 const http = require('http');
 const https = require('https');
 const engine = require("ejs-mate");
-const mysql = require("mysql2");
 const favicon = require("serve-favicon");
 const {Server} = require("socket.io")
 const { join } = require('path');
 const { readFileSync } = require("fs");
-const con = require("./connection");
+const conPromise = require("./connection");
 const auth = require("./auth");
 
 const login = require("./routes/login");
@@ -71,19 +70,13 @@ namespace.on('connection', (socket) => {
         console.log(`${socket.id} joined room: ${roomName}`);
     });
 
-    socket.on('message', (msg) => {
+    socket.on('message', async (msg) => {
+        const con = await conPromise;
         console.log("Received: " + msg);
         socket.to(group).emit("message", msg);
 
         let parsedMsg = JSON.parse(msg);
 
-        con.prepare("INSERT INTO Message(author,chat,content) VALUES (?,?,?)", (err, stmt) => {
-            if (err) throw err;
-
-            stmt.execute([parseInt(parsedMsg.sender),group,parsedMsg.text], (err, result) => {
-                if (err) throw err;
-            });
-        });
-
+        con.execute("INSERT INTO Message(author,chat,content) VALUES (?,?,?)", [parseInt(parsedMsg.sender),group,parsedMsg.text]);
     });
 });
