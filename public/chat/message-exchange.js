@@ -1,4 +1,4 @@
-const messagesContainer = document.querySelector("#chat-container .messages");
+const messagesContainer = document.querySelector("#chat-container #messages-container");
 
 const socket = io("/chat");
 socket.on("connect", () => {
