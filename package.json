@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/Simon9116/OpenDayBuonarroti.git"
   },
-  "author": "Simone Leveghi, Francesco Petracca",
+  "author": "Simone Leveghi",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
