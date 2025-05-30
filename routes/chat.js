@@ -5,7 +5,20 @@ const router = express.Router();
 
 async function fetchChats(userId) {
     const con = await conPromise;
-    const [chats, fields] = await con.execute("SELECT c.id, c.name FROM UserChat uc JOIN Chat c ON uc.chat = c.id WHERE userAccount=?", [userId]);
+    const [chats, fields] = await con.execute(`
+        SELECT c.id, c.name, m.content AS lastMessage 
+        FROM UserChat uc
+            JOIN Chat c ON uc.chat = c.id
+            JOIN Message m ON m.chat = c.id 
+        WHERE uc.userAccount = ?
+            AND m.id = (
+             SELECT mm.id 
+             FROM Message mm 
+             WHERE mm.chat = c.id 
+             ORDER BY mm.sendingDate DESC 
+             LIMIT 1
+            )
+    `, [userId]);
 
     return chats;
 }

@@ -39,6 +39,7 @@
             <% for(let chat of chats) { %>
                 <div class="chat-item" data-chat-id="<%= chat.id %>">
                     <h2><%= chat.name %></h2>
+                    <p><%= chat.lastMessage %></p>
                 </div>
             <%}%>
         </section>
