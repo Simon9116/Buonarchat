@@ -1,14 +1,14 @@
 {
-  "name": "opendaybuonarroti",
+  "name": "buonarchat",
   "version": "1.0.0",
-  "description": "Simple website to explain how the Buonarroti High School is organised",
+  "description": "Real-time WebApp made to illustrate teens on how the internet works during ITT Buonarroti's OpenDays",
   "main": "index.js",
   "scripts": {
     "test": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Simon9116/OpenDayBuonarroti.git"
+    "url": "https://github.com/Simon9116/Buonarchat.git"
   },
   "author": "Simone Leveghi",
   "license": "ISC",
