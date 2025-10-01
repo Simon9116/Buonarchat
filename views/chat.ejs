@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/chat/message-exchange.js" async></script>
+    <script src="/chat/chats-list.js" async></script>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/chat/styles.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <title>Chat</title>
+</head>
+<script>
+    const chatId = "<%= chatId %>";
+    const userId = "<%= userId %>";
+</script>
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <section id="app-container">
+        <%- include('partials/chats-list.ejs') %>
+
+        <section id="chat-container">
+            <div id="messages-container">
+                <% for(let message of messages) { %>
+                    <div class='message
+                <% if(message.author === userId) { %>
+                    sent
+                <% } else { %>
+                    received
+                <% } %>
+                '><%= message.content %></div>
+                <%}%>
+            </div>
+
+            <div id="chat-input">
+                <form id="send-message-form" action="/" method="GET">
+                    <input name="text" type="text" placeholder="Messaggio">
+
+                    <button type="submit"><img src="/send-icon.png" alt="Invia"></button>
+                </form>
+            </div>
+        </section>
+    </section>
+</body>
+</html>

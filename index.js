@@ -1,49 +1,82 @@
 const express = require('express');
+const session = require('express-session');
+const http = require('http');
 const https = require('https');
 const engine = require("ejs-mate");
+const favicon = require("serve-favicon");
 const {Server} = require("socket.io")
 const { join } = require('path');
 const { readFileSync } = require("fs");
-require('dotenv').config();
+const conPromise = require("./connection");
+const auth = require("./auth");
+
+const login = require("./routes/login");
+const signup = require("./routes/signup");
+const chat = require("./routes/chat");
 
 const app = express();
 
-const hostname = (process.env.STATUS === "production")? process.env.PROD_HOST : process.env.DEV_HOST;
-const port = (process.env.STATUS === "production")? process.env.PROD_PORT : process.env.DEV_PORT;
+const hostname = process.env.HOSTNAME;
+const port = process.env.PORT;
 
 app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", join(__dirname, "views"));
 
+//middleware
+app.use(favicon(join(__dirname, "public", "favicon.ico")));
 app.use(express.static(join(__dirname, "public")));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(auth);
 
-app.get('/', (req, res) => {
-    res.render('index', { messages: [] });
-});
+//routes
+app.use("/login", login);
+app.use("/signup", signup);
+app.use("/chat", chat);
+
 
 let server = null;
 if(process.env.STATUS === "production") {
     server = https.createServer({
         key: readFileSync(join(__dirname, 'cert/server.key')),
         cert: readFileSync(join(__dirname, 'cert/server.cert'))
-    }, app).listen(port, hostname, () => {
-        console.log(`Listening at: https://${hostname}:${port}`);
-    });
+    }, app);
 }
 else {
-    server = app.listen(port, hostname, () => {
-        console.log(`Listening at http://${hostname}:${port}`);
-    })
+    server = http.createServer(app);
 }
+server.listen(port, hostname, () => {
+    console.log(`Listening at ${hostname}:${port}`);
+});
+
 
 const io = new Server(server);
 io.on('connection', (socket) => {
     console.log('Connection established with: ' + socket.id);
 });
-const namespace = io.of('/');
+
+const namespace = io.of('/chat');
+let group;
 namespace.on('connection', (socket) => {
-    socket.on('message', (msg) => {
+    socket.on('joinRoom', (roomName) => {
+        group = roomName;
+        socket.join(roomName);
+        console.log(`${socket.id} joined room: ${roomName}`);
+    });
+
+    socket.on('message', async (msg) => {
+        const con = await conPromise;
         console.log("Received: " + msg);
-        namespace.emit("message", msg);
-    })
-})
+        socket.to(group).emit("message", msg);
+
+        let parsedMsg = JSON.parse(msg);
+
+        con.execute("INSERT INTO Message(author,chat,content) VALUES (?,?,?)", [parseInt(parsedMsg.sender),group,parsedMsg.text]);
+    });
+});

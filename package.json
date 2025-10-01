@@ -4,7 +4,8 @@
   "description": "Real-time WebApp made to illustrate teens on how the internet works during ITT Buonarroti's OpenDays",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js",
+    "test": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -16,8 +17,11 @@
     "dotenv": "^16.4.5",
     "ejs-mate": "^4.0.0",
     "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
+    "mysql2": "^3.14.0",
+    "serve-favicon": "^2.5.0",
     "socket.io": "^4.8.1"
   }
 }

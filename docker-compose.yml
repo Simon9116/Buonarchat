@@ -1,0 +1,51 @@
+services:
+  app:
+    container_name: "app"
+    build: .
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      DB_CONTAINER_NAME: ${DB_CONTAINER_NAME}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      HOSTNAME: ${APP_HOSTNAME:-0.0.0.0}
+      PORT: ${APP_PORT:-8080}
+      SESSION_SECRET: ${APP_SESSION_SECRET}
+    ports:
+      - "${HOST_PORT:-8080}:${APP_PORT:-8080}"
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    container_name: "mysql"
+    image: "mysql:8"
+    restart: "always"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  phpmyadmin:
+    container_name: "phpmyadmin"
+    image: "phpmyadmin/phpmyadmin"
+    restart: "always"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASS}
+    ports:
+      - "5001:80"
+    depends_on:
+      - mysql
+volumes:
+  db-data:
