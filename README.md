@@ -1,5 +1,10 @@
 # Buonarchat - Real-Time Chat Application
 
+> **Note:** This is an old high school project.  
+> It is no longer maintained but i might be coming back to it.
+
+![Status: Archived](https://img.shields.io/badge/status-archived-red)
+
 Buonarchat is a modern, self-hostable real-time chat application built with Node.js, Express.js, WebSockets, and MySQL. Designed with security and responsiveness in mind.
 
 ## Features
