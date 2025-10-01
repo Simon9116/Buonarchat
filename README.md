@@ -38,7 +38,7 @@ Buonarchat is a modern, self-hostable real-time chat application built with Node
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/buonarchat.git
+git clone https://github.com/Simon9116/Buonarchat.git
 cd buonarchat
 # Edit .env files with your settings
 docker-compose up -d
