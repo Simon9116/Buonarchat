@@ -16,8 +16,8 @@ const chat = require("./routes/chat");
 
 const app = express();
 
-const hostname = (process.env.STATUS === "production")? process.env.PROD_HOST : process.env.DEV_HOST;
-const port = (process.env.STATUS === "production")? process.env.PROD_PORT : process.env.DEV_PORT;
+const hostname = (process.env.NODE_ENV === "production")? process.env.PROD_HOST : process.env.DEV_HOST;
+const port = (process.env.NODE_ENV === "production")? process.env.PROD_PORT : process.env.DEV_PORT;
 
 app.engine("ejs", engine);
 app.set("view engine", "ejs");
